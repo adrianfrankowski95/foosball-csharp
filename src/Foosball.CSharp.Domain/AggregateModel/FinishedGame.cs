@@ -15,20 +15,19 @@ public class FinishedGame : Game
             throw new FoosballDomainException("Game cannot be null.");
         }
 
-        if (!game.Sets.AreFinished())
+        if (game.Sets is not FinishedSets finishedSets)
         {
             throw new FoosballDomainException("All sets must be finished to consider game as finished.");
         }
 
-        var winner = game.Sets.GetWinner();
-        if (winner is null)
-        {
-            throw new FoosballDomainException("Winner must not be null in a finished game.");
-        }
-
         Id = game.Id;
         Sets = game.Sets;
-        WinnerTeamId = winner;
+
+        var wins = finishedSets.Get()
+            .GroupBy(s => s.WinnerTeamId)
+            .ToDictionary(s => s.Key, s => s.Count());
+
+        WinnerTeamId = wins.First(w => w.Value == wins.Values.Max()).Key;
     }
 
     public static FinishedGame Finish(GameInProgress game)

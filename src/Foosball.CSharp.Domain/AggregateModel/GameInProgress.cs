@@ -18,7 +18,7 @@ public class GameInProgress : Game
         }
 
         Id = GameId.Create();
-        Sets = Sets.Begin(Id, teamAId, teamBId);
+        Sets = SetsInProgress.Begin(Id, teamAId, teamBId);
         StartedAt = startedAt;
     }
 
@@ -31,7 +31,13 @@ public class GameInProgress : Game
 
     public Game UpdateCurrentSet(SetResult newResult)
     {
-        Sets.UpdateCurrent(newResult);
-        return Sets.AreFinished() ? FinishedGame.Finish(this) : this;
+        if (Sets is not SetsInProgress setsInProgress)
+        {
+            throw new FoosballDomainException("Game in progress must contain sets that are still in progress.");
+        }
+
+        Sets = setsInProgress.UpdateCurrent(newResult);
+
+        return Sets is FinishedSets ? FinishedGame.Finish(this) : this;
     }
 }
