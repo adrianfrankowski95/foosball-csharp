@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foosball.CSharp.Domain", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foosball.CSharp.Infrastructure", "Foosball.CSharp.Infrastructure\Foosball.CSharp.Infrastructure.csproj", "{5330FF7B-9673-4263-808D-CC14E56FAD20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foosball.CSharp.Tests", "Foosball.CSharp.Tests\Foosball.CSharp.Tests.csproj", "{37741B5C-34A0-45DB-B300-5584E67B40DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{5330FF7B-9673-4263-808D-CC14E56FAD20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5330FF7B-9673-4263-808D-CC14E56FAD20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5330FF7B-9673-4263-808D-CC14E56FAD20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37741B5C-34A0-45DB-B300-5584E67B40DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37741B5C-34A0-45DB-B300-5584E67B40DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37741B5C-34A0-45DB-B300-5584E67B40DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37741B5C-34A0-45DB-B300-5584E67B40DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
