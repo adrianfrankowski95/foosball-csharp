@@ -16,7 +16,7 @@ public class Sets
         };
     }
 
-    public static Sets Start(GameId gameId, TeamId teamAId, TeamId teamBId)
+    public static Sets Begin(GameId gameId, TeamId teamAId, TeamId teamBId)
         => new(gameId, teamAId, teamBId);
 
     public void UpdateCurrent(SetResult newResult)
@@ -58,5 +58,5 @@ public class Sets
     public TeamId GetWinner() =>
         AreFinished()
         ? GetWins().First(v => v.Value == GetWins().Values.Max()).Key
-        : throw new FoosballDomainException("Could not get a winner because sets have not finished yet.");
+        : throw new FoosballDomainException("Could not get a winner, because sets have not finished yet.");
 }

@@ -10,7 +10,7 @@ public class OnePlayerTeam : Team
     {
         if (playerId is null)
         {
-            throw new FoosballDomainException("One-player team must have at least one player.");
+            throw new FoosballDomainException("One-player team must have one player.");
         }
 
         PlayerId = playerId;

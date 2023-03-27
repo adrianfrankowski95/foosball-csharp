@@ -17,18 +17,18 @@ public class FinishedGame : Game
 
         if (!game.Sets.AreFinished())
         {
-            throw new FoosballDomainException($"All sets must be finished to consider game as finished.");
+            throw new FoosballDomainException("All sets must be finished to consider game as finished.");
         }
 
         var winner = game.Sets.GetWinner();
         if (winner is null)
         {
-            throw new FoosballDomainException($"Winner must not be null in finished game.");
+            throw new FoosballDomainException("Winner must not be null in a finished game.");
         }
 
         Id = game.Id;
         Sets = game.Sets;
-        WinnerTeamId = game.Sets.GetWinner();
+        WinnerTeamId = winner;
     }
 
     public static FinishedGame Finish(GameInProgress game)

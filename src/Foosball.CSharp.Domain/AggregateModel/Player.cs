@@ -13,12 +13,12 @@ public class Player : Entity<PlayerId>
     {
         if (firstName is null)
         {
-            throw new FoosballDomainException($"First name of the player is required.");
+            throw new FoosballDomainException("First name of the player is required.");
         }
 
         if (lastName is null)
         {
-            throw new FoosballDomainException($"Last name of the player is required.");
+            throw new FoosballDomainException("Last name of the player is required.");
         }
 
         Id = PlayerId.Create();

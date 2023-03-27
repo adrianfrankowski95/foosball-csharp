@@ -18,7 +18,7 @@ public class GameInProgress : Game
         }
 
         Id = GameId.Create();
-        Sets = Sets.Start(Id, teamAId, teamBId);
+        Sets = Sets.Begin(Id, teamAId, teamBId);
         StartedAt = startedAt;
     }
 

@@ -11,12 +11,12 @@ public class TwoPlayersTeam : Team
     {
         if (firstPlayerId is null)
         {
-            throw new FoosballDomainException("Two-players team must have at least two players.");
+            throw new FoosballDomainException("Two-players team must have two players.");
         }
 
         if (secondPlayerId is null)
         {
-            throw new FoosballDomainException("Two-players team must have at least two players.");
+            throw new FoosballDomainException("Two-players team must have two players.");
         }
 
         FirstPlayerId = firstPlayerId;
