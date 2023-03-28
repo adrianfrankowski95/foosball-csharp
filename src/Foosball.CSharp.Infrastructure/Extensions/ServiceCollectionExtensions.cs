@@ -32,7 +32,6 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<IGameRepository, EfGameRepository>();
         services.TryAddScoped<IUnitOfWork, EfUnitOfWork>();
 
-
         return services;
     }
 }

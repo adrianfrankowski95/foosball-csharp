@@ -13,6 +13,7 @@
 
   <ItemGroup>
 		<ProjectReference Include="..\Foosball.CSharp.Infrastructure\Foosball.CSharp.Infrastructure.csproj" />
+    <ProjectReference Include="..\Foosball.CSharp.Domain\Foosball.CSharp.Domain.csproj" />
 	</ItemGroup>
 
 </Project>
