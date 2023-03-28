@@ -7,26 +7,26 @@ public class SetInProgress : Set
     private SetInProgress(GameId gameId, TeamId teamAId, TeamId teamBId) : base(gameId, teamAId, teamBId)
     {
         Id = SetId.Create();
-        Result = SetResult.Empty();
+        Scores = Scores.Empty();
     }
 
     public static SetInProgress Start(GameId gameId, TeamId teamAId, TeamId teamBId)
         => new(gameId, teamAId, teamBId);
 
-    public Set UpdateResult(SetResult newResult)
+    public Set UpdateScores(Scores scores)
     {
-        if (newResult is null)
+        if (scores is null)
         {
-            throw new FoosballDomainException("Result cannot be null.");
+            throw new FoosballDomainException("Scores cannot be null.");
         }
 
-        if (newResult.AnyLowerThan(Result))
+        if (scores.AnyScoreLowerThan(Scores))
         {
             throw new FoosballDomainException("New number of scored goals cannot be lower than the previous one.");
         }
 
-        Result = newResult;
+        Scores = scores;
 
-        return Result.IsFinished() ? FinishedSet.Finish(this) : this;
+        return Scores.HaveWinner() ? FinishedSet.Finish(this) : this;
     }
 }

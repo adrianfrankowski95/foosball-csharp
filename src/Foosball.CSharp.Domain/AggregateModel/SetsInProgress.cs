@@ -13,15 +13,15 @@ public class SetsInProgress : Sets
     public static SetsInProgress Begin(GameId gameId, TeamId teamAId, TeamId teamBId)
         => new(gameId, teamAId, teamBId);
 
-    public Sets UpdateCurrent(SetResult newResult)
+    public Sets UpdateCurrent(Scores scores)
     {
         var lastSet = _sets[^1];
-        if (lastSet is not SetInProgress inProgress)
+        if (lastSet is not SetInProgress setInProgress)
         {
             throw new FoosballDomainException("There are no sets in progress that could be updated.");
         }
 
-        lastSet = inProgress.UpdateResult(newResult);
+        lastSet = setInProgress.UpdateScores(scores);
 
         if (!AllFinished())
         {

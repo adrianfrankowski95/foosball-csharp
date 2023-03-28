@@ -25,21 +25,21 @@ public class GameInProgress : Game
         AddDomainEvent(new GameCreatedDomainEvent(Id, teamAId, teamBId, startedAt));
     }
 
-    // According to the Foosball rules, team may contain either 1 or 2 players
+    // According to the Foosball rules, teams may contain either 1 or 2 players
     public static GameInProgress Create(TwoPlayersTeam teamA, TwoPlayersTeam teamB, DateTime startedAt)
         => new(teamA.Id, teamB.Id, startedAt);
 
     public static GameInProgress Create(OnePlayerTeam teamA, OnePlayerTeam teamB, DateTime startedAt)
         => new(teamA.Id, teamB.Id, startedAt);
 
-    public Game UpdateCurrentSet(SetResult newResult)
+    public Game UpdateCurrentSet(Scores scores)
     {
         if (Sets is not SetsInProgress setsInProgress)
         {
             throw new FoosballDomainException("Game in progress must contain sets that are still in progress.");
         }
 
-        Sets = setsInProgress.UpdateCurrent(newResult);
+        Sets = setsInProgress.UpdateCurrent(scores);
 
         if (Sets is FinishedSets)
         {

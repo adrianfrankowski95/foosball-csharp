@@ -9,7 +9,7 @@ public abstract class Set : Entity<SetId>
     public GameId GameId { get; protected set; }
     public TeamId TeamAId { get; protected set; }
     public TeamId TeamBId { get; protected set; }
-    public SetResult Result { get; protected set; }
+    public Scores Scores { get; protected set; }
 
     protected Set(GameId gameId, TeamId teamAId, TeamId teamBId)
     {

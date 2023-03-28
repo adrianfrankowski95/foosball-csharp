@@ -6,7 +6,7 @@ using Foosball.CSharp.Domain.SeedWork;
 
 public class Goals : ValueObject, IComparable<Goals>
 {
-    public const int MaxValue = 10;
+    public static readonly Goals ToWin = 10.Goals();
     public int Value { get; }
 
     public Goals(int value)
@@ -16,9 +16,9 @@ public class Goals : ValueObject, IComparable<Goals>
             throw new FoosballDomainException("Goals cannot have a negative value.");
         }
 
-        if (value > MaxValue)
+        if (value > ToWin.Value)
         {
-            throw new FoosballDomainException($"Scored goals cannot exceed ${MaxValue}.");
+            throw new FoosballDomainException($"Scored goals cannot exceed ${ToWin.Value}.");
         }
 
         Value = value;

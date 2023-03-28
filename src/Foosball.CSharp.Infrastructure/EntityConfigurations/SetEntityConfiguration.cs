@@ -19,15 +19,15 @@ public class SetEntityConfiguration : IEntityTypeConfiguration<Set>
             .HasConversion(x => x.Value, x => SetId.FromExisting(x));
 
         builder
-            .OwnsOne(x => x.Result, r =>
+            .OwnsOne(x => x.Scores, r =>
             {
-                r.Property(x => x.TeamAGoals)
+                r.Property(x => x.TeamAScore)
                     .HasConversion(
                         g => g.Value,
                         g => g.Goals())
                     .IsRequired();
 
-                r.Property(x => x.TeamBGoals).
+                r.Property(x => x.TeamBScore).
                     HasConversion(
                         g => g.Value,
                         g => g.Goals())

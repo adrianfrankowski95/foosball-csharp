@@ -14,19 +14,19 @@ public class FinishedSet : Set
             throw new FoosballDomainException("Set cannot be null.");
         }
 
-        if (!set.Result.IsFinished())
+        if (!set.Scores.HaveWinner())
         {
-            throw new FoosballDomainException($"Any team must score {Goals.MaxValue} goals to consider set as finished.");
+            throw new FoosballDomainException("There are not enough goals to consider this set as finished.");
         }
 
-        if (set.Result.IsEqual())
+        if (set.Scores.IsDraw())
         {
-            throw new FoosballDomainException($"Both teams cannot score {Goals.MaxValue} goals.");
+            throw new FoosballDomainException("There must be an only one winner.");
         }
 
         Id = set.Id;
-        Result = set.Result;
-        WinnerTeamId = Result.TeamAGoals > Result.TeamBGoals ? TeamAId : TeamBId;
+        Scores = set.Scores;
+        WinnerTeamId = Scores.TeamAScore > Scores.TeamBScore ? TeamAId : TeamBId;
     }
 
     public static FinishedSet Finish(SetInProgress set)
