@@ -1,6 +1,6 @@
 namespace Foosball.CSharp.Domain.SeedWork;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
-    Task<bool> CommitAsync(CancellationToken cancellationToken);
+    Task<int> CommitAsync(CancellationToken cancellationToken);
 }

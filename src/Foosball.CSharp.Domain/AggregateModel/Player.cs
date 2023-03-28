@@ -1,4 +1,3 @@
-
 using Foosball.CSharp.Domain.Exceptions;
 using Foosball.CSharp.Domain.SeedWork;
 

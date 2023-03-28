@@ -1,5 +1,6 @@
 
 
+using Foosball.CSharp.Domain.Events;
 using Foosball.CSharp.Domain.Exceptions;
 
 namespace Foosball.CSharp.Domain.AggregateModel;
@@ -21,13 +22,17 @@ public class FinishedGame : Game
         }
 
         Id = game.Id;
-        Sets = game.Sets;
+        Sets = finishedSets;
 
         var wins = finishedSets.Get()
             .GroupBy(s => s.WinnerTeamId)
             .ToDictionary(s => s.Key, s => s.Count());
 
         WinnerTeamId = wins.First(w => w.Value == wins.Values.Max()).Key;
+
+        var lastSet = finishedSets.Last();
+
+        AddDomainEvent(new GameFinishedDomainEvent(Id, lastSet.TeamAId, lastSet.TeamBId, WinnerTeamId, finishedSets));
     }
 
     public static FinishedGame Finish(GameInProgress game)

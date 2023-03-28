@@ -17,7 +17,7 @@ public class SetInProgress : Set
     {
         if (newResult is null)
         {
-            throw new FoosballDomainException("Results cannot be null.");
+            throw new FoosballDomainException("Result cannot be null.");
         }
 
         if (newResult.AnyLowerThan(Result))

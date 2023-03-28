@@ -44,7 +44,7 @@ public class SetsInProgress : Sets
             .GroupBy(s => s.WinnerTeamId)
             .ToDictionary(s => s.Key, s => s.Count());
 
-    public bool AllFinished()
+    private bool AllFinished()
     {
         var maxCountReached = _sets.Count == MaxCount && _sets[^1] is FinishedSet;
         var maxWinsReached = GetWins().Any(w => w.Value == RequiredToWin);

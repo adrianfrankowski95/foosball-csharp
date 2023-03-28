@@ -1,4 +1,5 @@
 
+using Foosball.CSharp.Domain.Events;
 using Foosball.CSharp.Domain.Exceptions;
 
 namespace Foosball.CSharp.Domain.AggregateModel;
@@ -20,13 +21,15 @@ public class GameInProgress : Game
         Id = GameId.Create();
         Sets = SetsInProgress.Begin(Id, teamAId, teamBId);
         StartedAt = startedAt;
+
+        AddDomainEvent(new GameCreatedDomainEvent(Id, teamAId, teamBId, startedAt));
     }
 
     // According to the Foosball rules, team may contain either 1 or 2 players
-    public static GameInProgress Start(TwoPlayersTeam teamA, TwoPlayersTeam teamB, DateTime startedAt)
+    public static GameInProgress Create(TwoPlayersTeam teamA, TwoPlayersTeam teamB, DateTime startedAt)
         => new(teamA.Id, teamB.Id, startedAt);
 
-    public static GameInProgress Start(OnePlayerTeam teamA, OnePlayerTeam teamB, DateTime startedAt)
+    public static GameInProgress Create(OnePlayerTeam teamA, OnePlayerTeam teamB, DateTime startedAt)
         => new(teamA.Id, teamB.Id, startedAt);
 
     public Game UpdateCurrentSet(SetResult newResult)
@@ -38,6 +41,14 @@ public class GameInProgress : Game
 
         Sets = setsInProgress.UpdateCurrent(newResult);
 
-        return Sets is FinishedSets ? FinishedGame.Finish(this) : this;
+        if (Sets is FinishedSets)
+        {
+            return FinishedGame.Finish(this);
+        }
+
+        var lastSet = Sets.Last();
+        AddDomainEvent(new GameUpdatedDomainEvent(Id, lastSet.TeamAId, lastSet.TeamBId, setsInProgress));
+
+        return this;
     }
 }

@@ -1,8 +1,7 @@
-
 using Foosball.CSharp.Domain.Exceptions;
 using Foosball.CSharp.Domain.SeedWork;
 
-namespace Foosball.CSharp.Domain;
+namespace Foosball.CSharp.Domain.AggregateModel;
 
 public class NonEmptyString : ValueObject
 {
