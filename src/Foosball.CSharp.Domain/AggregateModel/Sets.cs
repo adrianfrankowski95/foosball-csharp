@@ -11,7 +11,6 @@ public abstract class Sets : IEnumerable<Set>
     public IEnumerator<Set> GetEnumerator()
         => _sets.GetEnumerator();
 
-
     IEnumerator IEnumerable.GetEnumerator()
         => _sets.GetEnumerator();
 }

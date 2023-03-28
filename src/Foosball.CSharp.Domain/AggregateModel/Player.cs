@@ -26,7 +26,7 @@ public class Player : Entity<PlayerId>
     }
 }
 
-public sealed class PlayerId
+public sealed class PlayerId : ValueObject
 {
     public Guid Value { get; }
 
@@ -41,11 +41,8 @@ public sealed class PlayerId
     public static PlayerId FromExisting(Guid value)
         => new(value);
 
-    public override int GetHashCode()
-        => Value.GetHashCode();
-
-    public override bool Equals(object? obj)
+    protected override IEnumerable<object> GetEqualityAttributes()
     {
-        return Value.Equals(obj);
+        yield return Value;
     }
 }

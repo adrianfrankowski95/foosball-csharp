@@ -8,7 +8,7 @@ public abstract class Game : Entity<GameId>, IAggregateRoot
     public DateTime StartedAt { get; protected set; }
 }
 
-public sealed class GameId
+public sealed class GameId : ValueObject
 {
     public Guid Value { get; }
 
@@ -23,11 +23,8 @@ public sealed class GameId
     public static GameId FromExisting(Guid value)
         => new(value);
 
-    public override int GetHashCode()
-        => Value.GetHashCode();
-
-    public override bool Equals(object? obj)
+    protected override IEnumerable<object> GetEqualityAttributes()
     {
-        return Value.Equals(obj);
+        yield return Value;
     }
 }

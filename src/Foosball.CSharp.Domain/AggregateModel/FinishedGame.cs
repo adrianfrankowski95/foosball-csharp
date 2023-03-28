@@ -1,5 +1,3 @@
-
-
 using Foosball.CSharp.Domain.Events;
 using Foosball.CSharp.Domain.Exceptions;
 
@@ -23,12 +21,7 @@ public class FinishedGame : Game
 
         Id = game.Id;
         Sets = finishedSets;
-
-        var wins = finishedSets.Get()
-            .GroupBy(s => s.WinnerTeamId)
-            .ToDictionary(s => s.Key, s => s.Count());
-
-        WinnerTeamId = wins.First(w => w.Value == wins.Values.Max()).Key;
+        WinnerTeamId = finishedSets.GetWinner();
 
         var lastSet = finishedSets.Last();
 

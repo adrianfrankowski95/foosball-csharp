@@ -19,7 +19,7 @@ public abstract class Team : Entity<TeamId>
     }
 }
 
-public sealed class TeamId
+public sealed class TeamId : ValueObject
 {
     public Guid Value { get; }
 
@@ -34,11 +34,8 @@ public sealed class TeamId
     public static TeamId FromExisting(Guid value)
         => new(value);
 
-    public override int GetHashCode()
-        => Value.GetHashCode();
-
-    public override bool Equals(object? obj)
+    protected override IEnumerable<object> GetEqualityAttributes()
     {
-        return Value.Equals(obj);
+        yield return Value;
     }
 }

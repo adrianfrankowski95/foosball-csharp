@@ -39,7 +39,7 @@ public abstract class Set : Entity<SetId>
     }
 }
 
-public sealed class SetId
+public sealed class SetId : ValueObject
 {
     public Guid Value { get; }
 
@@ -54,11 +54,8 @@ public sealed class SetId
     public static SetId FromExisting(Guid value)
         => new(value);
 
-    public override int GetHashCode()
-        => Value.GetHashCode();
-
-    public override bool Equals(object? obj)
+    protected override IEnumerable<object> GetEqualityAttributes()
     {
-        return Value.Equals(obj);
+        yield return Value;
     }
 }

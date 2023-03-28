@@ -4,8 +4,6 @@ namespace Foosball.CSharp.Domain.AggregateModel;
 
 public class FinishedSets : Sets
 {
-    public IReadOnlyList<FinishedSet> Get() => _sets.Cast<FinishedSet>().ToList();
-
     private FinishedSets(SetsInProgress sets)
     {
         if (sets is null)
@@ -21,11 +19,18 @@ public class FinishedSets : Sets
         AddSets(sets.Get().Cast<FinishedSet>());
     }
 
+    public static FinishedSets Finish(SetsInProgress sets)
+        => new(sets);
+
+    private Dictionary<TeamId, int> GetWins()
+        => _sets.Cast<FinishedSet>()
+            .GroupBy(s => s.WinnerTeamId)
+            .ToDictionary(s => s.Key, s => s.Count());
+
+    public TeamId GetWinner() => GetWins().First(w => w.Value == GetWins().Values.Max()).Key;
+
     private void AddSets(IEnumerable<FinishedSet> sets)
     {
         _sets.AddRange(sets);
     }
-
-    public static FinishedSets Finish(SetsInProgress sets)
-        => new(sets);
 }

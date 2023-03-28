@@ -12,12 +12,8 @@ public abstract class ValueObject
             return false;
         }
 
-        if (!valueObject.GetType().Equals(GetType()))
-        {
-            return false;
-        }
-
-        return GetEqualityAttributes().SequenceEqual(valueObject.GetEqualityAttributes());
+        return valueObject.GetType().Equals(GetType())
+            && GetEqualityAttributes().SequenceEqual(valueObject.GetEqualityAttributes());
     }
 
     public override int GetHashCode()
