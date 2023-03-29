@@ -4,6 +4,8 @@ using Foosball.CSharp.Domain.SeedWork;
 using Foosball.CSharp.Domain.TeamAggregateModel;
 using Foosball.CSharp.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 
 namespace Foosball.CSharp.Infrastructure;
 
@@ -14,7 +16,6 @@ public class FoosballDbContext : DbContext
 
     public FoosballDbContext(DbContextOptions<FoosballDbContext> options) : base(options)
     {
-
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,5 +40,33 @@ public class FoosballDbContext : DbContext
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         configurationBuilder.IgnoreAny<IReadOnlyList<DomainEvent>>();
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        DispatchDomainEvents(ChangeTracker);
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    public override int SaveChanges()
+    {
+        DispatchDomainEvents(ChangeTracker);
+        return base.SaveChanges();
+    }
+
+    private static void DispatchDomainEvents(ChangeTracker changeTracker)
+    {
+        var domainEntities = changeTracker
+            .Entries<Entity<object>>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents is not null && e.DomainEvents.Count > 0)
+            .ToList();
+
+        var domainEvents = domainEntities
+            .SelectMany(e => e.DomainEvents)
+            .ToList();
+
+        domainEvents.ForEach(e => Console.WriteLine($"Dispatching domain event: {e.GetType().Name}, data: {e}"));
+        domainEntities.ForEach(e => e.ClearDomainEvents());
     }
 }

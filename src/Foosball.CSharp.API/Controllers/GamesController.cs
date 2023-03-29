@@ -114,6 +114,6 @@ public class GamesController : ControllerBase
                     ? $"Game has finished, winner: {finished.WinnerTeamId.Value}."
                     : "The game is still in progress.")}")
 
-            : Problem("Error starting a new game.");
+            : Problem("Error updating a new game.");
     }
 }

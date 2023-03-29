@@ -89,7 +89,7 @@ public class GameInProgress : Game
 
     private bool GameFinished()
     {
-        var maxSetsReached = _sets.Count == MaxSets && _sets[^-1] is FinishedSet;
+        var maxSetsReached = _sets.Count == MaxSets && _sets[^1] is FinishedSet;
         var maxWinsReached = GetWins().Any(w => w.Value == SetsRequiredToWin);
 
         return maxSetsReached || maxWinsReached;

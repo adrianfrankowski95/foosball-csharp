@@ -22,11 +22,11 @@ public class Scores : ValueObject
     public static Scores Set(Goals teamAScore, Goals teamBScore)
         => new(teamAScore, teamBScore);
 
+    public static Scores Empty() => new(0.Goals(), 0.Goals());
+
     public bool HaveWinner() => TeamAScore == Goals.ToWin.Goals() || TeamBScore == Goals.ToWin.Goals();
     public bool IsDraw() => TeamAScore == TeamBScore;
     public bool AnyScoreLowerThan(Scores other) => TeamAScore < other.TeamAScore || TeamBScore < other.TeamBScore;
-
-    public static Scores Empty() => new(0.Goals(), 0.Goals());
 
     protected override IEnumerable<object> GetEqualityAttributes()
     {

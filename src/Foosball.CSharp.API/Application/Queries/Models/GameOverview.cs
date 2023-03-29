@@ -5,13 +5,13 @@ namespace Foosball.CSharp.API.Application.Queries.Models;
 public record GameOverview(
     Guid GameId,
     string Status,
-    DateTime StartedAt,
-    Guid? WinnerTeamId,
-    Guid TeamAId,
-    Guid TeamBId,
-    string TeamAName,
-    string TeamBName,
-    string? WinnerTeamName,
     long CurrentSet,
+    Guid TeamAId,
+    string TeamAName,
     int TeamACurrentScore,
-    int TeamBCurrentScore);
+    Guid TeamBId,
+    string TeamBName,
+    int TeamBCurrentScore,
+    Guid? WinnerTeamId,
+    string? WinnerTeamName,
+    DateTime StartedAt);

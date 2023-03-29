@@ -40,8 +40,8 @@ public class FoosballDbSeeder : IHostedService
         => (new Player("Cristiano", "Ronaldo"), new Player("Lionel", "Messi"));
 
     private static (OnePlayerTeam firstTeam, OnePlayerTeam secondTeam) GetTeams((Player firstPlayer, Player secondPlayer) playersPair)
-        => (new OnePlayerTeam($"Team {playersPair.firstPlayer.FirstName} {playersPair.firstPlayer.LastName} {DateTime.UtcNow.Ticks}", playersPair.firstPlayer.Id),
-            new OnePlayerTeam($"Team {playersPair.secondPlayer.FirstName} {playersPair.secondPlayer.LastName} {DateTime.UtcNow.Ticks}", playersPair.secondPlayer.Id));
+        => (new OnePlayerTeam($"Team {playersPair.firstPlayer.FirstName} {playersPair.firstPlayer.LastName}", playersPair.firstPlayer.Id),
+            new OnePlayerTeam($"Team {playersPair.secondPlayer.FirstName} {playersPair.secondPlayer.LastName}", playersPair.secondPlayer.Id));
 
     private static Game GetGame((OnePlayerTeam firstTeam, OnePlayerTeam secondTeam) teamsPair)
         => GameInProgress.Create(teamsPair.firstTeam, teamsPair.secondTeam, DateTime.UtcNow);
