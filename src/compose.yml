@@ -7,7 +7,7 @@ services:
       dockerfile: Foosball.CSharp.API/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      CONNECTIONSTRINGS__FOOSBALLDB: 'host=${FOOSBALL_DB_HOSTNAME};port=5432;database=${FOOSBALL_DB_HOSTNAME};password=${FOOSBALL_DB_POSTGRES_PASSWORD};username=${FOOSBALL_DB_POSTGRES_USER}'
+      CONNECTIONSTRINGS__FOOSBALLDB: 'host=${FOOSBALL_DB_HOSTNAME};port=5432;database=${FOOSBALL_DB_HOSTNAME};password=${FOOSBALL_DB_POSTGRES_PASSWORD};username=${FOOSBALL_DB_POSTGRES_USER};Include Error Detail=true'
     ports:
       - 8080:80
 

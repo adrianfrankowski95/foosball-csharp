@@ -25,12 +25,14 @@ public class SetEntityConfiguration : IEntityTypeConfiguration<Set>
                     .HasConversion(
                         g => g.Value,
                         g => g.Goals())
+                    .HasColumnName("team_a_score")
                     .IsRequired();
 
-                r.Property(x => x.TeamBScore).
-                    HasConversion(
+                r.Property(x => x.TeamBScore)
+                    .HasConversion(
                         g => g.Value,
                         g => g.Goals())
+                    .HasColumnName("team_b_score")
                     .IsRequired();
 
                 r.WithOwner();
@@ -40,13 +42,6 @@ public class SetEntityConfiguration : IEntityTypeConfiguration<Set>
             .HasDiscriminator<string>("status")
             .HasValue<SetInProgress>("in_progress")
             .HasValue<FinishedSet>("finished");
-
-        builder
-            .HasOne<Game>()
-            .WithMany(x => x.Sets)
-            .HasForeignKey(x => x.GameId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired();
 
         builder
             .Property(x => x.GameId)
@@ -76,10 +71,5 @@ public class SetEntityConfiguration : IEntityTypeConfiguration<Set>
             .Property(x => x.TeamBId)
             .HasConversion(x => x.Value, x => TeamId.FromExisting(x))
             .IsRequired();
-
-        builder
-            .Property<byte[]>("row_version")
-            .HasColumnName("row_version")
-            .IsRowVersion();
     }
 }

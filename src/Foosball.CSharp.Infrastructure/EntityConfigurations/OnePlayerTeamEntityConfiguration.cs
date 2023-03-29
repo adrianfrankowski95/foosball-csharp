@@ -24,10 +24,5 @@ public class OnePlayerTeamEntityConfiguration : IEntityTypeConfiguration<OnePlay
             .HasForeignKey(x => x.PlayerId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
-
-        builder
-            .Property<byte[]>("row_version")
-            .HasColumnName("row_version")
-            .IsRowVersion();
     }
 }

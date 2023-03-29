@@ -13,6 +13,12 @@ public class SetInProgress : Set
     public static SetInProgress Start(GameId gameId, TeamId teamAId, TeamId teamBId)
         => new(gameId, teamAId, teamBId);
 
+    public static Set WithScores(GameId gameId, TeamId teamAId, TeamId teamBId, Scores scores)
+    {
+        var set = new SetInProgress(gameId, teamAId, teamBId);
+        return set.UpdateScores(scores);
+    }
+
     public Set UpdateScores(Scores scores)
     {
         if (scores is null)

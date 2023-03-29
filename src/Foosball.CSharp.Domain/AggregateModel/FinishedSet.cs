@@ -7,6 +7,9 @@ public class FinishedSet : Set
 {
     public TeamId WinnerTeamId { get; }
 
+    // Required by EF :-( Private, though :-)
+    private FinishedSet() : base() { }
+
     private FinishedSet(SetInProgress set) : base(set.GameId, set.TeamAId, set.TeamBId)
     {
         if (set is null)

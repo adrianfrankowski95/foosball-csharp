@@ -7,6 +7,9 @@ public abstract class Team : Entity<TeamId>
 {
     public NonEmptyString Name { get; }
 
+    // Required by EF :-( Protected, exposed to derived types :-|
+    protected Team() { }
+
     protected Team(NonEmptyString name)
     {
         if (name is null)

@@ -5,17 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Foosball.CSharp.Infrastructure.EntityConfigurations;
 
-public class FinishedGameEntityConfiguration : IEntityTypeConfiguration<FinishedGame>
+public class GameInProgressEntityConfiguration : IEntityTypeConfiguration<GameInProgress>
 {
-    public void Configure(EntityTypeBuilder<FinishedGame> builder)
+    public void Configure(EntityTypeBuilder<GameInProgress> builder)
     {
         builder.HasBaseType<Game>();
-
-        builder
-            .HasOne<Team>()
-            .WithMany()
-            .HasForeignKey(x => x.WinnerTeamId)
-            .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasMany(x => x.Sets)
@@ -27,10 +21,5 @@ public class FinishedGameEntityConfiguration : IEntityTypeConfiguration<Finished
             .HasField("_sets")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
-
-        builder
-            .Property(x => x.WinnerTeamId)
-            .HasConversion(x => x.Value, x => TeamId.FromExisting(x))
-            .IsRequired();
     }
 }

@@ -21,10 +21,5 @@ public class FinishedSetEntityConfiguration : IEntityTypeConfiguration<FinishedS
             .Property(x => x.WinnerTeamId)
             .HasConversion(x => x.Value, x => TeamId.FromExisting(x))
             .IsRequired();
-
-        builder
-            .Property<byte[]>("row_version")
-            .HasColumnName("row_version")
-            .IsRowVersion();
     }
 }

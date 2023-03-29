@@ -35,10 +35,5 @@ public class TwoPlayersTeamEntityConfiguration : IEntityTypeConfiguration<TwoPla
             .WithMany()
             .HasForeignKey(x => x.SecondPlayerId)
             .IsRequired();
-
-        builder
-            .Property<byte[]>("row_version")
-            .HasColumnName("row_version")
-            .IsRowVersion();
     }
 }

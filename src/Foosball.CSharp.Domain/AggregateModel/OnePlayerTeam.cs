@@ -6,7 +6,10 @@ public class OnePlayerTeam : Team
 {
     public PlayerId PlayerId { get; }
 
-    public OnePlayerTeam(NonEmptyString name, PlayerId playerId) : base(name)
+    // Required by EF :-( Private, though :-)
+    private OnePlayerTeam() : base() { }
+
+    public OnePlayerTeam(NonEmptyString teamName, PlayerId playerId) : base(teamName)
     {
         if (playerId is null)
         {

@@ -27,18 +27,8 @@ public class GameEntityConfiguration : IEntityTypeConfiguration<Game>
             .IsDescending(true);
 
         builder
-            .Navigation(x => x.Sets)
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .IsRequired();
-
-        builder
             .HasDiscriminator<string>("status")
             .HasValue<GameInProgress>("in_progress")
             .HasValue<FinishedGame>("finished");
-
-        builder
-            .Property<byte[]>("row_version")
-            .HasColumnName("row_version")
-            .IsRowVersion();
     }
 }

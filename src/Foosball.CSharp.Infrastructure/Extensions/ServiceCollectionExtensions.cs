@@ -24,13 +24,14 @@ public static class ServiceCollectionExtensions
             opts.UseNpgsql(connectionString, opts =>
             {
                 opts.MigrationsAssembly("Foosball.CSharp.API");
-                opts.EnableRetryOnFailure();
             });
             opts.UseSnakeCaseNamingConvention();
         });
 
         services.TryAddScoped<IGameRepository, EfGameRepository>();
-        services.TryAddScoped<IUnitOfWork, EfUnitOfWork>();
+
+        services.AddHostedService<FoosballDbMigrator>();
+        services.AddHostedService<FoosballDbSeeder>();
 
         return services;
     }

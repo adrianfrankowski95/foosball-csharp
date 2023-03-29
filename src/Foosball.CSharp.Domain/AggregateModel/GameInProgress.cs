@@ -6,6 +6,14 @@ namespace Foosball.CSharp.Domain.AggregateModel;
 
 public class GameInProgress : Game
 {
+    public const int MaxSets = 3;
+    public const int SetsRequiredToWin = 2;
+    private readonly List<Set> _sets;
+    public IReadOnlyList<Set> Sets => _sets;
+
+    // Required by EF :-( Private, though :-)
+    private GameInProgress() { }
+
     private GameInProgress(TeamId teamAId, TeamId teamBId, DateTime startedAt) : base()
     {
         if (teamAId is null || teamBId is null)
@@ -19,7 +27,9 @@ public class GameInProgress : Game
         }
 
         Id = GameId.Create();
-        Sets = SetsInProgress.Begin(Id, teamAId, teamBId);
+
+        _sets = new();
+        StartNewSet(SetInProgress.Start(Id, teamAId, teamBId));
         StartedAt = startedAt;
 
         AddDomainEvent(new GameCreatedDomainEvent(Id, teamAId, teamBId, startedAt));
@@ -34,21 +44,60 @@ public class GameInProgress : Game
 
     public Game UpdateCurrentSet(Scores scores)
     {
-        if (Sets is not SetsInProgress setsInProgress)
+        var lastSet = _sets[^1];
+
+        if (lastSet is FinishedSet)
         {
-            throw new FoosballDomainException("Game in progress must contain sets that are still in progress.");
+            if (_sets.Count == MaxSets)
+            {
+                throw new FoosballDomainException($"There are no sets in progress that could be updated and maximum number of sets ({MaxSets}) has been reached.");
+            }
+
+            BeginSetWithScores(SetInProgress.WithScores(lastSet.GameId, lastSet.TeamAId, lastSet.TeamBId, scores));
         }
 
-        Sets = setsInProgress.UpdateCurrent(scores);
+        if (lastSet is SetInProgress setInProgress)
+        {
+            UpdateLastSet(setInProgress.UpdateScores(scores));
+        }
 
-        if (Sets is FinishedSets)
+        if (GameFinished())
         {
             return FinishedGame.Finish(this);
         }
 
-        var lastSet = Sets.Last();
-        AddDomainEvent(new GameUpdatedDomainEvent(Id, lastSet.TeamAId, lastSet.TeamBId, setsInProgress));
+        AddDomainEvent(new GameUpdatedDomainEvent(Id, lastSet.TeamAId, lastSet.TeamBId, Sets));
 
         return this;
     }
+
+    private void StartNewSet(SetInProgress newSet)
+    {
+        _sets.Add(newSet);
+    }
+
+    private void BeginSetWithScores(Set newSet)
+    {
+        _sets.Add(newSet);
+    }
+
+    private void UpdateLastSet(Set updatedSet)
+    {
+        _sets[^1] = updatedSet;
+    }
+
+    private bool GameFinished()
+    {
+        var maxSetsReached = _sets.Count == MaxSets && _sets[^-1] is FinishedSet;
+        var maxWinsReached = GetWins().Any(w => w.Value == SetsRequiredToWin);
+
+        return maxSetsReached || maxWinsReached;
+    }
+
+    private Dictionary<TeamId, int> GetWins()
+        => _sets
+            .Where(s => s is FinishedSet)
+            .Cast<FinishedSet>()
+            .GroupBy(s => s.WinnerTeamId)
+            .ToDictionary(s => s.Key, s => s.Count());
 }

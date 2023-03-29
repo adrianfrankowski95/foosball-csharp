@@ -3,4 +3,4 @@ using Foosball.CSharp.Domain.SeedWork;
 
 namespace Foosball.CSharp.Domain.Events;
 
-public record GameFinishedDomainEvent(GameId GameId, TeamId TeamAId, TeamId TeamBId, TeamId WinnerTeamId, FinishedSets Sets) : DomainEvent;
+public record GameFinishedDomainEvent(GameId GameId, TeamId TeamAId, TeamId TeamBId, TeamId WinnerTeamId, IReadOnlyList<FinishedSet> Sets) : DomainEvent;

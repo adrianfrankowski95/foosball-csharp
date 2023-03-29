@@ -27,10 +27,5 @@ public class PlayerEntityConfiguration : IEntityTypeConfiguration<Player>
             .Property(x => x.LastName)
             .HasConversion(x => x.Value, x => new NonEmptyString(x))
             .IsRequired();
-
-        builder
-            .Property<byte[]>("row_version")
-            .HasColumnName("row_version")
-            .IsRowVersion();
     }
 }

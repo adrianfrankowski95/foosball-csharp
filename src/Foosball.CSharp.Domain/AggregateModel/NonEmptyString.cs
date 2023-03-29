@@ -21,4 +21,8 @@ public class NonEmptyString : ValueObject
     {
         yield return Value;
     }
+
+    public static implicit operator NonEmptyString(string val) => new(val);
+
+    public override string ToString() => Value;
 }

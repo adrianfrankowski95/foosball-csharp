@@ -8,7 +8,7 @@ public class Scores : ValueObject
     public Goals TeamAScore { get; }
     public Goals TeamBScore { get; }
 
-    public Scores(Goals teamAScore, Goals teamBScore)
+    private Scores(Goals teamAScore, Goals teamBScore)
     {
         if (teamAScore is null || teamBScore is null)
         {
@@ -19,7 +19,10 @@ public class Scores : ValueObject
         TeamBScore = teamBScore;
     }
 
-    public bool HaveWinner() => TeamAScore == Goals.ToWin || TeamBScore == Goals.ToWin;
+    public static Scores Set(Goals teamAScore, Goals teamBScore)
+        => new(teamAScore, teamBScore);
+
+    public bool HaveWinner() => TeamAScore == Goals.ToWin.Goals() || TeamBScore == Goals.ToWin.Goals();
     public bool IsDraw() => TeamAScore == TeamBScore;
     public bool AnyScoreLowerThan(Scores other) => TeamAScore < other.TeamAScore || TeamBScore < other.TeamBScore;
 

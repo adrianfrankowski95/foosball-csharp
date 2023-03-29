@@ -32,10 +32,5 @@ public class TeamEntityConfiguration : IEntityTypeConfiguration<Team>
             .HasDiscriminator<string>("type")
             .HasValue<OnePlayerTeam>("one-player")
             .HasValue<TwoPlayersTeam>("two-players");
-
-        builder
-            .Property<byte[]>("row_version")
-            .HasColumnName("row_version")
-            .IsRowVersion();
     }
 }

@@ -11,6 +11,9 @@ public abstract class Set : Entity<SetId>
     public TeamId TeamBId { get; protected set; }
     public Scores Scores { get; protected set; }
 
+    // Required by EF :-( Protected, exposed to derived types :-|
+    protected Set() { }
+
     protected Set(GameId gameId, TeamId teamAId, TeamId teamBId)
     {
         if (gameId is null)

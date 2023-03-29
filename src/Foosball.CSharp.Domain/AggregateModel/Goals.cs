@@ -6,7 +6,7 @@ using Foosball.CSharp.Domain.SeedWork;
 
 public class Goals : ValueObject, IComparable<Goals>
 {
-    public static readonly Goals ToWin = 10.Goals();
+    public const int ToWin = 10;
     public int Value { get; }
 
     public Goals(int value)
@@ -16,27 +16,25 @@ public class Goals : ValueObject, IComparable<Goals>
             throw new FoosballDomainException("Goals cannot have a negative value.");
         }
 
-        if (value > ToWin.Value)
+        if (value > ToWin)
         {
-            throw new FoosballDomainException($"Scored goals cannot exceed ${ToWin.Value}.");
+            throw new FoosballDomainException($"Scored goals cannot exceed {ToWin}.");
         }
 
         Value = value;
     }
+
     public int CompareTo(Goals? other)
     {
-        if (other is null)
-        {
-            throw new ArgumentNullException(nameof(other));
-        }
-
-        return Value.CompareTo(other.Value);
+        return Value.CompareTo(other?.Value ?? 0);
     }
 
     public static bool operator >(Goals a, Goals b) => a.CompareTo(b) > 0;
     public static bool operator <(Goals a, Goals b) => a.CompareTo(b) < 0;
     public static bool operator ==(Goals a, Goals b) => a.CompareTo(b) == 0;
     public static bool operator !=(Goals a, Goals b) => a.CompareTo(b) != 0;
+    public static bool operator >=(Goals a, Goals b) => a.CompareTo(b) >= 0;
+    public static bool operator <=(Goals a, Goals b) => a.CompareTo(b) <= 0;
 
     protected override IEnumerable<object> GetEqualityAttributes()
     {

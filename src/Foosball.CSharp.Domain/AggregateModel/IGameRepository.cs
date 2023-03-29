@@ -5,8 +5,7 @@ namespace Foosball.CSharp.Domain.AggregateModel;
 
 public interface IGameRepository : IRepository<Game>
 {
-    public IUnitOfWork UnitOfWork { get; }
-    public ValueTask<Game?> FindGameAsync(GameId gameId);
-    public void AddGame(Game game);
-    public void UpdateGame(Game game);
+    public Task<Game?> GetGameAsync(GameId gameId, CancellationToken cancellationToken = default);
+    public Task<bool> AddGameAsync(Game game, CancellationToken cancellationToken = default);
+    public Task<bool> UpdateGameAsync(Game updatedGame, CancellationToken cancellationToken = default);
 }

@@ -4,7 +4,6 @@ namespace Foosball.CSharp.Domain.AggregateModel;
 
 public abstract class Game : Entity<GameId>, IAggregateRoot
 {
-    public Sets Sets { get; protected set; }
     public DateTime StartedAt { get; protected set; }
 }
 

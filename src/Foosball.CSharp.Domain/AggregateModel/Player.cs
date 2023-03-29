@@ -8,6 +8,9 @@ public class Player : Entity<PlayerId>
     public NonEmptyString FirstName { get; }
     public NonEmptyString LastName { get; }
 
+    // Required by EF :-( Private, though :-)
+    private Player() { }
+
     public Player(NonEmptyString firstName, NonEmptyString lastName)
     {
         if (firstName is null)
@@ -29,6 +32,9 @@ public class Player : Entity<PlayerId>
 public sealed class PlayerId : ValueObject
 {
     public Guid Value { get; }
+
+    // Required by EF :-( Private, though :-)
+    private PlayerId() { }
 
     private PlayerId(Guid value)
     {

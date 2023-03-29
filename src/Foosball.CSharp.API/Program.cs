@@ -3,6 +3,7 @@ using Foosball.CSharp.Infrastructure.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var config = builder.Configuration;
+var env = builder.Environment;
 
 
 services.AddControllers();

@@ -7,14 +7,12 @@ public class TwoPlayersTeam : Team
     public PlayerId FirstPlayerId { get; }
     public PlayerId SecondPlayerId { get; }
 
-    public TwoPlayersTeam(NonEmptyString name, PlayerId firstPlayerId, PlayerId secondPlayerId) : base(name)
-    {
-        if (firstPlayerId is null)
-        {
-            throw new FoosballDomainException("Two-players team must have two players.");
-        }
+    // Required by EF :-( Private, though :-)
+    private TwoPlayersTeam() : base() { }
 
-        if (secondPlayerId is null)
+    public TwoPlayersTeam(NonEmptyString teamName, PlayerId firstPlayerId, PlayerId secondPlayerId) : base(teamName)
+    {
+        if (firstPlayerId is null || secondPlayerId is null)
         {
             throw new FoosballDomainException("Two-players team must have two players.");
         }
