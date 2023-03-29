@@ -1,10 +1,13 @@
-using Foosball.CSharp.Domain.AggregateModel;
+using System.Data.Common;
+using Foosball.CSharp.Domain.GameAggregateModel;
 using Foosball.CSharp.Domain.SeedWork;
+using Foosball.CSharp.Domain.TeamAggregateModel;
 using Foosball.CSharp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Npgsql;
 
 namespace Foosball.CSharp.Infrastructure.Extensions;
 
@@ -29,9 +32,12 @@ public static class ServiceCollectionExtensions
         });
 
         services.TryAddScoped<IGameRepository, EfGameRepository>();
+        services.TryAddScoped<ITeamRepository, EfTeamRepository>();
 
         services.AddHostedService<FoosballDbMigrator>();
         services.AddHostedService<FoosballDbSeeder>();
+
+        services.AddTransient<DbConnection, NpgsqlConnection>(sp => new NpgsqlConnection(connectionString));
 
         return services;
     }

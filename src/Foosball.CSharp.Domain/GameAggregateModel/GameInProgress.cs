@@ -1,8 +1,9 @@
 
 using Foosball.CSharp.Domain.Events;
 using Foosball.CSharp.Domain.Exceptions;
+using Foosball.CSharp.Domain.TeamAggregateModel;
 
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.GameAggregateModel;
 
 public class GameInProgress : Game
 {
@@ -42,7 +43,7 @@ public class GameInProgress : Game
     public static GameInProgress Create(OnePlayerTeam teamA, OnePlayerTeam teamB, DateTime startedAt)
         => new(teamA.Id, teamB.Id, startedAt);
 
-    public Game UpdateCurrentSet(Scores scores)
+    public Game UpdateCurrentSet(Scores scores, DateTime now)
     {
         var lastSet = _sets[^1];
 
@@ -53,12 +54,12 @@ public class GameInProgress : Game
                 throw new FoosballDomainException($"There are no sets in progress that could be updated and maximum number of sets ({MaxSets}) has been reached.");
             }
 
-            BeginSetWithScores(SetInProgress.WithScores(lastSet.GameId, lastSet.TeamAId, lastSet.TeamBId, scores));
+            BeginSetWithScores(SetInProgress.WithScores(lastSet.GameId, lastSet.TeamAId, lastSet.TeamBId, scores, now));
         }
 
         if (lastSet is SetInProgress setInProgress)
         {
-            UpdateLastSet(setInProgress.UpdateScores(scores));
+            UpdateLastSet(setInProgress.UpdateScores(scores, now));
         }
 
         if (GameFinished())

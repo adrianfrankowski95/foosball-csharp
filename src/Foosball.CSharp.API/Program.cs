@@ -1,3 +1,4 @@
+using Foosball.CSharp.API.Application.Queries;
 using Foosball.CSharp.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
     .AddInfrastructure(config);
+
+services.AddScoped<IGameQueries, DapperGameQueries>();
 
 
 var app = builder.Build();

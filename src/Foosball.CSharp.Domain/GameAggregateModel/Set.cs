@@ -1,8 +1,9 @@
 
 using Foosball.CSharp.Domain.Exceptions;
 using Foosball.CSharp.Domain.SeedWork;
+using Foosball.CSharp.Domain.TeamAggregateModel;
 
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.GameAggregateModel;
 
 public abstract class Set : Entity<SetId>
 {

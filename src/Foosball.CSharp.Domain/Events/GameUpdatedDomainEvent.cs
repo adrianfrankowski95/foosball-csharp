@@ -1,5 +1,6 @@
-using Foosball.CSharp.Domain.AggregateModel;
+using Foosball.CSharp.Domain.GameAggregateModel;
 using Foosball.CSharp.Domain.SeedWork;
+using Foosball.CSharp.Domain.TeamAggregateModel;
 
 namespace Foosball.CSharp.Domain.Events;
 

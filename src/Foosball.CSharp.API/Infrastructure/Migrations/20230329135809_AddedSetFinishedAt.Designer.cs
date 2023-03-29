@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Foosball.CSharp.API.Migrations
 {
     [DbContext(typeof(FoosballDbContext))]
-    [Migration("20230329115302_InitCreate")]
-    partial class InitCreate
+    [Migration("20230329135809_AddedSetFinishedAt")]
+    partial class AddedSetFinishedAt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,28 +52,6 @@ namespace Foosball.CSharp.API.Migrations
                     b.HasDiscriminator<string>("status").HasValue("Game");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Foosball.CSharp.Domain.GameAggregateModel.Player", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("first_name");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("last_name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_players");
-
-                    b.ToTable("players", (string)null);
                 });
 
             modelBuilder.Entity("Foosball.CSharp.Domain.GameAggregateModel.Set", b =>
@@ -118,7 +96,29 @@ namespace Foosball.CSharp.API.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Foosball.CSharp.Domain.GameAggregateModel.Team", b =>
+            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.Player", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("first_name");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("last_name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_players");
+
+                    b.ToTable("players", (string)null);
+                });
+
+            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.Team", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -173,6 +173,10 @@ namespace Foosball.CSharp.API.Migrations
                 {
                     b.HasBaseType("Foosball.CSharp.Domain.GameAggregateModel.Set");
 
+                    b.Property<DateTime>("FinishedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("finished_at");
+
                     b.Property<Guid>("WinnerTeamId")
                         .HasColumnType("uuid")
                         .HasColumnName("winner_team_id");
@@ -190,9 +194,9 @@ namespace Foosball.CSharp.API.Migrations
                     b.HasDiscriminator().HasValue("in_progress");
                 });
 
-            modelBuilder.Entity("Foosball.CSharp.Domain.GameAggregateModel.OnePlayerTeam", b =>
+            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.OnePlayerTeam", b =>
                 {
-                    b.HasBaseType("Foosball.CSharp.Domain.GameAggregateModel.Team");
+                    b.HasBaseType("Foosball.CSharp.Domain.TeamAggregateModel.Team");
 
                     b.Property<Guid>("PlayerId")
                         .ValueGeneratedOnUpdateSometimes()
@@ -205,9 +209,9 @@ namespace Foosball.CSharp.API.Migrations
                     b.HasDiscriminator().HasValue("one-player");
                 });
 
-            modelBuilder.Entity("Foosball.CSharp.Domain.GameAggregateModel.TwoPlayersTeam", b =>
+            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.TwoPlayersTeam", b =>
                 {
-                    b.HasBaseType("Foosball.CSharp.Domain.GameAggregateModel.Team");
+                    b.HasBaseType("Foosball.CSharp.Domain.TeamAggregateModel.Team");
 
                     b.Property<Guid>("FirstPlayerId")
                         .ValueGeneratedOnUpdateSometimes()
@@ -236,19 +240,19 @@ namespace Foosball.CSharp.API.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_sets_games_game_id");
 
-                    b.HasOne("Foosball.CSharp.Domain.GameAggregateModel.Team", null)
+                    b.HasOne("Foosball.CSharp.Domain.TeamAggregateModel.Team", null)
                         .WithMany()
                         .HasForeignKey("TeamAId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_sets_team_team_temp_id");
+                        .HasConstraintName("fk_sets_teams_team_temp_id");
 
-                    b.HasOne("Foosball.CSharp.Domain.GameAggregateModel.Team", null)
+                    b.HasOne("Foosball.CSharp.Domain.TeamAggregateModel.Team", null)
                         .WithMany()
                         .HasForeignKey("TeamBId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_sets_team_team_temp_id1");
+                        .HasConstraintName("fk_sets_teams_team_temp_id1");
 
                     b.OwnsOne("Foosball.CSharp.Domain.GameAggregateModel.Scores", "Scores", b1 =>
                         {
@@ -279,12 +283,12 @@ namespace Foosball.CSharp.API.Migrations
 
             modelBuilder.Entity("Foosball.CSharp.Domain.GameAggregateModel.FinishedGame", b =>
                 {
-                    b.HasOne("Foosball.CSharp.Domain.GameAggregateModel.Team", null)
+                    b.HasOne("Foosball.CSharp.Domain.TeamAggregateModel.Team", null)
                         .WithMany()
                         .HasForeignKey("WinnerTeamId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_games_team_team_temp_id");
+                        .HasConstraintName("fk_games_teams_team_temp_id");
                 });
 
             modelBuilder.Entity("Foosball.CSharp.Domain.GameAggregateModel.FinishedSet", b =>
@@ -296,17 +300,17 @@ namespace Foosball.CSharp.API.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_set_games_finished_game_id");
 
-                    b.HasOne("Foosball.CSharp.Domain.GameAggregateModel.Team", null)
+                    b.HasOne("Foosball.CSharp.Domain.TeamAggregateModel.Team", null)
                         .WithMany()
                         .HasForeignKey("WinnerTeamId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_sets_team_team_temp_id2");
+                        .HasConstraintName("fk_sets_teams_team_temp_id2");
                 });
 
-            modelBuilder.Entity("Foosball.CSharp.Domain.GameAggregateModel.OnePlayerTeam", b =>
+            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.OnePlayerTeam", b =>
                 {
-                    b.HasOne("Foosball.CSharp.Domain.GameAggregateModel.Player", null)
+                    b.HasOne("Foosball.CSharp.Domain.TeamAggregateModel.Player", null)
                         .WithMany()
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -314,16 +318,16 @@ namespace Foosball.CSharp.API.Migrations
                         .HasConstraintName("fk_teams_players_first_player_id");
                 });
 
-            modelBuilder.Entity("Foosball.CSharp.Domain.GameAggregateModel.TwoPlayersTeam", b =>
+            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.TwoPlayersTeam", b =>
                 {
-                    b.HasOne("Foosball.CSharp.Domain.GameAggregateModel.Player", null)
+                    b.HasOne("Foosball.CSharp.Domain.TeamAggregateModel.Player", null)
                         .WithMany()
                         .HasForeignKey("FirstPlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_teams_players_player_id");
 
-                    b.HasOne("Foosball.CSharp.Domain.GameAggregateModel.Player", null)
+                    b.HasOne("Foosball.CSharp.Domain.TeamAggregateModel.Player", null)
                         .WithMany()
                         .HasForeignKey("SecondPlayerId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,6 +1,7 @@
 using Foosball.CSharp.Domain.Exceptions;
+using Foosball.CSharp.Domain.TeamAggregateModel;
 
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.GameAggregateModel;
 
 public class SetInProgress : Set
 {
@@ -13,13 +14,13 @@ public class SetInProgress : Set
     public static SetInProgress Start(GameId gameId, TeamId teamAId, TeamId teamBId)
         => new(gameId, teamAId, teamBId);
 
-    public static Set WithScores(GameId gameId, TeamId teamAId, TeamId teamBId, Scores scores)
+    public static Set WithScores(GameId gameId, TeamId teamAId, TeamId teamBId, Scores scores, DateTime now)
     {
         var set = new SetInProgress(gameId, teamAId, teamBId);
-        return set.UpdateScores(scores);
+        return set.UpdateScores(scores, now);
     }
 
-    public Set UpdateScores(Scores scores)
+    public Set UpdateScores(Scores scores, DateTime now)
     {
         if (scores is null)
         {
@@ -33,6 +34,6 @@ public class SetInProgress : Set
 
         Scores = scores;
 
-        return Scores.HaveWinner() ? FinishedSet.Finish(this) : this;
+        return Scores.HaveWinner() ? FinishedSet.Finish(this, now) : this;
     }
 }

@@ -1,4 +1,4 @@
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.GameAggregateModel;
 
 using System.Collections.Generic;
 using Foosball.CSharp.Domain.Exceptions;

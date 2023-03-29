@@ -1,9 +1,9 @@
 using Foosball.CSharp.Domain.Exceptions;
 using Foosball.CSharp.Domain.SeedWork;
 
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.TeamAggregateModel;
 
-public abstract class Team : Entity<TeamId>
+public abstract class Team : Entity<TeamId>, IAggregateRoot
 {
     public NonEmptyString Name { get; }
 

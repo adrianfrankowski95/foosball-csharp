@@ -1,6 +1,6 @@
 using Foosball.CSharp.Domain.Exceptions;
 
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.TeamAggregateModel;
 
 public class TwoPlayersTeam : Team
 {

@@ -1,6 +1,7 @@
 
-using Foosball.CSharp.Domain.AggregateModel;
+using Foosball.CSharp.Domain.GameAggregateModel;
 using Foosball.CSharp.Domain.SeedWork;
+using Foosball.CSharp.Domain.TeamAggregateModel;
 using Foosball.CSharp.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ namespace Foosball.CSharp.Infrastructure;
 public class FoosballDbContext : DbContext
 {
     public DbSet<Game> Games { get; set; }
+    public DbSet<Team> Teams { get; set; }
 
     public FoosballDbContext(DbContextOptions<FoosballDbContext> options) : base(options)
     {

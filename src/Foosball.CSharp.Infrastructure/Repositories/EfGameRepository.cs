@@ -1,4 +1,4 @@
-using Foosball.CSharp.Domain.AggregateModel;
+using Foosball.CSharp.Domain.GameAggregateModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Foosball.CSharp.Infrastructure.Repositories;

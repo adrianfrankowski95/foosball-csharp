@@ -1,6 +1,6 @@
 
-using Foosball.CSharp.Domain.AggregateModel;
-using Microsoft.EntityFrameworkCore;
+using Foosball.CSharp.Domain.GameAggregateModel;
+using Foosball.CSharp.Domain.TeamAggregateModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

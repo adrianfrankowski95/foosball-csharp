@@ -1,7 +1,7 @@
 
 using Foosball.CSharp.Domain.SeedWork;
 
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.GameAggregateModel;
 
 public interface IGameRepository : IRepository<Game>
 {

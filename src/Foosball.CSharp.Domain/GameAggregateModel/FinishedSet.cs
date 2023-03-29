@@ -1,16 +1,18 @@
 
 using Foosball.CSharp.Domain.Exceptions;
+using Foosball.CSharp.Domain.TeamAggregateModel;
 
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.GameAggregateModel;
 
 public class FinishedSet : Set
 {
     public TeamId WinnerTeamId { get; }
+    public DateTime FinishedAt { get; }
 
     // Required by EF :-( Private, though :-)
     private FinishedSet() : base() { }
 
-    private FinishedSet(SetInProgress set) : base(set.GameId, set.TeamAId, set.TeamBId)
+    private FinishedSet(SetInProgress set, DateTime finishedAt) : base(set.GameId, set.TeamAId, set.TeamBId)
     {
         if (set is null)
         {
@@ -30,8 +32,9 @@ public class FinishedSet : Set
         Id = set.Id;
         Scores = set.Scores;
         WinnerTeamId = Scores.TeamAScore > Scores.TeamBScore ? TeamAId : TeamBId;
+        FinishedAt = finishedAt;
     }
 
-    public static FinishedSet Finish(SetInProgress set)
-        => new(set);
+    public static FinishedSet Finish(SetInProgress set, DateTime finishedAt)
+        => new(set, finishedAt);
 }

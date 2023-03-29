@@ -1,6 +1,6 @@
 using Foosball.CSharp.Domain.SeedWork;
 
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.GameAggregateModel;
 
 public abstract class Game : Entity<GameId>, IAggregateRoot
 {

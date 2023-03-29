@@ -1,6 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
-using Foosball.CSharp.Domain.AggregateModel;
+using Foosball.CSharp.Domain.GameAggregateModel;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Foosball.CSharp.Infrastructure.EntityConfigurations;

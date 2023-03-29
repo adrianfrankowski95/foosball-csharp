@@ -1,7 +1,8 @@
 using Foosball.CSharp.Domain.Events;
 using Foosball.CSharp.Domain.Exceptions;
+using Foosball.CSharp.Domain.TeamAggregateModel;
 
-namespace Foosball.CSharp.Domain.AggregateModel;
+namespace Foosball.CSharp.Domain.GameAggregateModel;
 
 public class FinishedGame : Game
 {
@@ -30,7 +31,7 @@ public class FinishedGame : Game
         AddSets(game.Sets.Cast<FinishedSet>());
 
         WinnerTeamId = GetWinner();
-        
+
         var lastSet = Sets[^1];
         AddDomainEvent(new GameFinishedDomainEvent(Id, lastSet.TeamAId, lastSet.TeamBId, WinnerTeamId, Sets));
     }
