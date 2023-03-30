@@ -35,7 +35,7 @@ public class DapperGameQueries : IGameQueries
         LEFT JOIN teams AS tsw ON tsw.id = s.winner_team_id
         WHERE g.id = @GameId
         GROUP BY g.id, s.id, ta.id, tb.id, tgw.id, tsw.id
-        ORDER BY s.finished_at DESC NULLS LAST";
+        ORDER BY s.finished_at ASC NULLS LAST";
 
     private const string GetGameOverviewsQuery = @$"
         SELECT
