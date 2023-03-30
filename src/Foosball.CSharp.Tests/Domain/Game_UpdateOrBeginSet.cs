@@ -1,3 +1,4 @@
+using Foosball.CSharp.Domain.Exceptions;
 using Foosball.CSharp.Domain.GameAggregateModel;
 using Foosball.CSharp.Tests.Fixtures;
 
@@ -52,10 +53,19 @@ public class Game_UpdateOrBeginSet : IClassFixture<ScoresFixture>, IClassFixture
     }
 
     [Fact]
-    public void UpdateOrBeginSet_GameWithLastSet_GameIsFinished()
+    public void UpdateOrBeginSet_GameWithLastSet_IsFinished()
     {
         var finishedGame = GetGameWithLastSet().UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
         Assert.True(finishedGame is FinishedGame);
+    }
+
+    [Fact]
+    public void UpdateOrBeginSet_FinishedGameInProgress_ThrowsDomainException()
+    {
+        var gameInProgress = GetGameWithLastSet();
+        gameInProgress.UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.Now);
+
+        Assert.Throws<FoosballDomainException>(() => gameInProgress.UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.Now));
     }
 
     [Fact]
