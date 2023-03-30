@@ -9,7 +9,7 @@ public class Goals_Create
     [InlineData(Goals.ToWin + 1)]
     [InlineData(-1)]
     [InlineData(-100)]
-    public void Goals_CreatedWithInvalidValue_ThrowsDomainException(int goals)
+    public void Create_CreatedWithInvalidValue_ThrowsDomainException(int goals)
     {
         Assert.Throws<FoosballDomainException>(() => goals.Goals());
     }
@@ -17,7 +17,7 @@ public class Goals_Create
     [Theory]
     [InlineData(Goals.ToWin)]
     [InlineData(0)]
-    public void Goals_CreatedWithValidValue_HaveValidValue(int goals)
+    public void Create_CreatedWithValidValue_HaveValidValue(int goals)
     {
         Assert.True(goals.Goals().Value == goals);
     }

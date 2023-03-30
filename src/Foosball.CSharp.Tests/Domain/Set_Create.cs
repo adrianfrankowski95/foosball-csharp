@@ -15,21 +15,21 @@ public class Set_Create : IClassFixture<ScoresFixture>, IClassFixture<TeamsFixtu
     }
 
     [Fact]
-    public void Set_CreatedWithWonScores_IsFinished()
+    public void Create_CreatedWithWonScores_IsFinished()
     {
         var set = SetInProgress.WithScores(GameId.Create(), TeamId.Create(), TeamId.Create(), scoresFixture.FirstTeamWonScores, DateTime.Now);
         Assert.True(set is FinishedSet);
     }
 
     [Fact]
-    public void Set_CreatedWithScoresInProgress_IsInProgress()
+    public void Create_CreatedWithScoresInProgress_IsInProgress()
     {
         var set = SetInProgress.WithScores(GameId.Create(), TeamId.Create(), TeamId.Create(), scoresFixture.ScoresInProgress, DateTime.Now);
         Assert.True(set is SetInProgress);
     }
 
     [Fact]
-    public void Set_Started_IsInProgress()
+    public void Create_Started_IsInProgress()
     {
         var set = SetInProgress.Start(GameId.Create(), TeamId.Create(), TeamId.Create());
         Assert.True(set is SetInProgress);

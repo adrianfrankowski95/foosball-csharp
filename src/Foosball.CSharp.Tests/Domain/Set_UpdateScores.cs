@@ -16,7 +16,7 @@ public class Set_UpdateScores : IClassFixture<ScoresFixture>, IClassFixture<Team
     }
 
     [Fact]
-    public void Set_UpdatedWithNullScores_ThrowsDomainException()
+    public void UpdateScores_WithNullScores_ThrowsDomainException()
     {
         var set = SetInProgress.Start(GameId.Create(), TeamId.Create(), TeamId.Create());
 
@@ -24,7 +24,7 @@ public class Set_UpdateScores : IClassFixture<ScoresFixture>, IClassFixture<Team
     }
 
     [Fact]
-    public void Set_UpdatedWithWonScores_IsFinished()
+    public void UpdateScores_WithWonScores_IsFinished()
     {
         var set = SetInProgress.Start(GameId.Create(), TeamId.Create(), TeamId.Create());
         var finished = set.UpdateScores(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
@@ -32,7 +32,7 @@ public class Set_UpdateScores : IClassFixture<ScoresFixture>, IClassFixture<Team
     }
 
     [Fact]
-    public void Set_UpdatedWithScoresInProgress_IsInProgress()
+    public void UpdateScores_WithScoresInProgress_IsInProgress()
     {
         var set = SetInProgress.Start(GameId.Create(), TeamId.Create(), TeamId.Create());
         var finished = set.UpdateScores(scoresFixture.ScoresInProgress, DateTime.UtcNow);
