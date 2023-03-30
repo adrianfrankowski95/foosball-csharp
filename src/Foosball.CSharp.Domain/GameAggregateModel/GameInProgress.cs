@@ -43,7 +43,7 @@ public class GameInProgress : Game
     public static GameInProgress Create(OnePlayerTeam teamA, OnePlayerTeam teamB, DateTime startedAt)
         => new(teamA.Id, teamB.Id, startedAt);
 
-    public Game UpdateCurrentSet(Scores scores, DateTime now)
+    public Game UpdateOrBeginSet(Scores scores, DateTime now)
     {
         var lastSet = _sets[^1];
 

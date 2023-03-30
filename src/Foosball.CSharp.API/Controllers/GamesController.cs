@@ -98,7 +98,7 @@ public class GamesController : ControllerBase
         Game? updatedGame;
         try
         {
-            updatedGame = gameInProgress.UpdateCurrentSet(
+            updatedGame = gameInProgress.UpdateOrBeginSet(
                 Scores.Set(command.TeamAScore.Goals(), command.TeamBScore.Goals()),
                 DateTime.UtcNow);
         }

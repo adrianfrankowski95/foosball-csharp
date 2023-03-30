@@ -2,43 +2,43 @@ using Foosball.CSharp.Domain.GameAggregateModel;
 
 namespace Foosball.CSharp.Tests.Domain;
 
-public class Game_UpdateCurrentSet : IClassFixture<ScoresFixture>, IClassFixture<TeamsFixture>
+public class Game_UpdateOrBeginSet : IClassFixture<ScoresFixture>, IClassFixture<TeamsFixture>
 {
     private readonly ScoresFixture scoresFixture;
     private readonly TeamsFixture teamsFixture;
 
-    public Game_UpdateCurrentSet(ScoresFixture scoresFixture, TeamsFixture teamsFixture)
+    public Game_UpdateOrBeginSet(ScoresFixture scoresFixture, TeamsFixture teamsFixture)
     {
         this.scoresFixture = scoresFixture;
         this.teamsFixture = teamsFixture;
     }
 
     [Fact]
-    public void UpdateCurrentSet_GameWithAllSetsFinished_ThrowsException()
+    public void UpdateOrBeginSet_GameWithAllSetsFinished_ThrowsException()
     {
-        var game = GetGameWithLastSet().UpdateCurrentSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
+        var game = GetGameWithLastSet().UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
         Assert.Throws<InvalidCastException>(() =>
         {
-            ((GameInProgress)game).UpdateCurrentSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
+            ((GameInProgress)game).UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
         });
     }
 
     [Fact]
     public void FinishCurrentSet_GameWithLastSet_GameIsFinished()
     {
-        var finishedGame = GetGameWithLastSet().UpdateCurrentSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
+        var finishedGame = GetGameWithLastSet().UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
         Assert.True(finishedGame is FinishedGame);
     }
 
     [Fact]
-    public void UpdateCurrentSet_GameWithWonRequiredNumberOfSets_IsFinished()
+    public void UpdateOrBeginSet_GameWithWonRequiredNumberOfSets_IsFinished()
     {
         Game game = GameInProgress.Create(teamsFixture.FirstTeam, teamsFixture.SecondTeam, DateTime.UtcNow);
 
         int count = 1;
         while (count <= GameInProgress.SetsRequiredToWin)
         {
-            game = ((GameInProgress)game).UpdateCurrentSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
+            game = ((GameInProgress)game).UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
             ++count;
         }
 
@@ -46,24 +46,24 @@ public class Game_UpdateCurrentSet : IClassFixture<ScoresFixture>, IClassFixture
     }
 
     [Fact]
-    public void UpdateCurrentSet_PreviousSetFinished_OneSetAdded()
+    public void UpdateOrBeginSet_PreviousSetFinished_OneSetAdded()
     {
         var game = GameInProgress.Create(teamsFixture.FirstTeam, teamsFixture.SecondTeam, DateTime.UtcNow);
-        var updatedGame = game.UpdateCurrentSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
+        var updatedGame = game.UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
         var setsCount = ((GameInProgress)updatedGame).Sets.Count;
 
-        updatedGame = game.UpdateCurrentSet(scoresFixture.ScoresInProgress, DateTime.UtcNow);
+        updatedGame = game.UpdateOrBeginSet(scoresFixture.ScoresInProgress, DateTime.UtcNow);
 
         Assert.True(((GameInProgress)updatedGame).Sets.Count == setsCount + 1);
     }
 
     [Fact]
-    public void UpdateCurrentSet_SetNotFinished_NoNewSetAdded()
+    public void UpdateOrBeginSet_SetNotFinished_NoNewSetAdded()
     {
         var game = GameInProgress.Create(teamsFixture.FirstTeam, teamsFixture.SecondTeam, DateTime.UtcNow);
         var setsCount = game.Sets.Count;
 
-        var updatedGame = game.UpdateCurrentSet(scoresFixture.ScoresInProgress, DateTime.UtcNow);
+        var updatedGame = game.UpdateOrBeginSet(scoresFixture.ScoresInProgress, DateTime.UtcNow);
 
         Assert.True(setsCount == ((GameInProgress)updatedGame).Sets.Count);
     }
@@ -77,7 +77,7 @@ public class Game_UpdateCurrentSet : IClassFixture<ScoresFixture>, IClassFixture
         {
             var scores = count % 2 == 1 ? scoresFixture.FirstTeamWonScores : scoresFixture.SecondTeamWonScores;
 
-            game = ((GameInProgress)game).UpdateCurrentSet(scores, DateTime.UtcNow);
+            game = ((GameInProgress)game).UpdateOrBeginSet(scores, DateTime.UtcNow);
             ++count;
         }
 
