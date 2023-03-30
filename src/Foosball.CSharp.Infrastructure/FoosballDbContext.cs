@@ -5,7 +5,6 @@ using Foosball.CSharp.Domain.TeamAggregateModel;
 using Foosball.CSharp.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.Logging;
 
 namespace Foosball.CSharp.Infrastructure;
 
