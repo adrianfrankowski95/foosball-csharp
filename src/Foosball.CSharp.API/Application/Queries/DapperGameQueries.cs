@@ -92,6 +92,7 @@ public class DapperGameQueries : IGameQueries
         return gameDetails;
     }
 
+    // As async stream to avoid loading much data into memory
     public async IAsyncEnumerable<GameOverview> GetGameOverviewsAsync()
     {
         using var reader = await _connection.ExecuteReaderAsync(GetGameOverviewsQuery).ConfigureAwait(false);
