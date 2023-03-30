@@ -25,10 +25,44 @@ public class Game_UpdateOrBeginSet : IClassFixture<ScoresFixture>, IClassFixture
     }
 
     [Fact]
-    public void FinishCurrentSet_GameWithLastSet_GameIsFinished()
+    public void UpdateOrBeginSet_GameWithSetInProgressWithUpdatedScoresInProgress_NoSetsAdded()
+    {
+        var game = GameInProgress.Create(teamsFixture.FirstTeam, teamsFixture.SecondTeam, DateTime.UtcNow);
+        game.UpdateOrBeginSet(scoresFixture.ScoresInProgress, DateTime.UtcNow);
+
+        Assert.True(game.Sets.Count == 1);
+    }
+
+    [Fact]
+    public void UpdateOrBeginSet_GameWithSetInProgressWithUpdatedWonScores_NoSetsAdded()
+    {
+        var game = GameInProgress.Create(teamsFixture.FirstTeam, teamsFixture.SecondTeam, DateTime.UtcNow);
+        game.UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
+
+        Assert.True(game.Sets.Count == 1);
+    }
+
+    [Fact]
+    public void UpdateOrBeginSet_GameWithSetInProgressWithUpdatedWonScores_LastSetIsFinished()
+    {
+        var game = GameInProgress.Create(teamsFixture.FirstTeam, teamsFixture.SecondTeam, DateTime.UtcNow);
+        game.UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
+
+        Assert.True(game.Sets[^1] is FinishedSet);
+    }
+
+    [Fact]
+    public void UpdateOrBeginSet_GameWithLastSet_GameIsFinished()
     {
         var finishedGame = GetGameWithLastSet().UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
         Assert.True(finishedGame is FinishedGame);
+    }
+
+    [Fact]
+    public void UpdateOrBeginSet_GameWithLastSet_CorrectTeamWon()
+    {
+        var finishedGame = GetGameWithLastSet().UpdateOrBeginSet(scoresFixture.FirstTeamWonScores, DateTime.UtcNow);
+        Assert.True(((FinishedGame)finishedGame).WinnerTeamId.Equals(teamsFixture.FirstTeam.Id));
     }
 
     [Fact]
