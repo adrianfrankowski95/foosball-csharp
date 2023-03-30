@@ -1,6 +1,6 @@
 using Foosball.CSharp.Domain.GameAggregateModel;
 
-namespace Foosball.CSharp.Tests.Domain;
+namespace Foosball.CSharp.Tests.Fixtures;
 
 public class ScoresFixture
 {

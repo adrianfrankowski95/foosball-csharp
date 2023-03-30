@@ -1,6 +1,6 @@
 using Foosball.CSharp.Domain.TeamAggregateModel;
 
-namespace Foosball.CSharp.Tests.Domain;
+namespace Foosball.CSharp.Tests.Fixtures;
 
 public class TeamsFixture
 {

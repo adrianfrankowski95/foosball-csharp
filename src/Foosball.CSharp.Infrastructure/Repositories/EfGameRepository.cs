@@ -23,6 +23,9 @@ public class EfGameRepository : IGameRepository
     public Task<Game?> GetGameAsync(GameId gameId, CancellationToken cancellationToken = default)
         => _games.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(gameId), cancellationToken);
 
+
+    // Note: EF Core does not support changing object type in a change tracker (eg. from GameInProgress to FinishedGame)
+    // Therefore we are manually removing old game and adding a new one in an atomic transaction
     public async Task<bool> UpdateGameAsync(Game updatedGame, CancellationToken cancellationToken = default)
     {
         var updated = false;

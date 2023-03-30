@@ -3,6 +3,9 @@ using Foosball.CSharp.Domain.SeedWork;
 
 namespace Foosball.CSharp.Domain.TeamAggregateModel;
 
+
+// Note: in this example Teams do not change their state, but are still modeled as an aggregate root
+// In a real-world scenario, teams could have their players replaced or points scored after a won game
 public abstract class Team : Entity<TeamId>, IAggregateRoot
 {
     public NonEmptyString Name { get; }

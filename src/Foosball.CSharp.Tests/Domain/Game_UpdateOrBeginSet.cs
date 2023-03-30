@@ -1,4 +1,5 @@
 using Foosball.CSharp.Domain.GameAggregateModel;
+using Foosball.CSharp.Tests.Fixtures;
 
 namespace Foosball.CSharp.Tests.Domain;
 
