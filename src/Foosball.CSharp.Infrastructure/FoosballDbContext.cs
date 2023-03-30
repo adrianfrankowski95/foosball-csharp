@@ -33,7 +33,7 @@ public class FoosballDbContext : DbContext
 
         modelBuilder.ApplyConfiguration(new TeamEntityConfiguration());
         modelBuilder.ApplyConfiguration(new OnePlayerTeamEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new TwoPlayersTeamEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new TwoPlayerTeamEntityConfiguration());
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

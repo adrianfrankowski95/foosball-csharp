@@ -6,9 +6,9 @@ using Foosball.CSharp.Domain.TeamAggregateModel;
 
 namespace Foosball.CSharp.Infrastructure.EntityConfigurations;
 
-public class TwoPlayersTeamEntityConfiguration : IEntityTypeConfiguration<TwoPlayersTeam>
+public class TwoPlayerTeamEntityConfiguration : IEntityTypeConfiguration<TwoPlayerTeam>
 {
-    public void Configure(EntityTypeBuilder<TwoPlayersTeam> builder)
+    public void Configure(EntityTypeBuilder<TwoPlayerTeam> builder)
     {
         builder
             .HasBaseType<Team>();

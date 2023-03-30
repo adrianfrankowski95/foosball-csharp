@@ -2,15 +2,15 @@ using Foosball.CSharp.Domain.Exceptions;
 
 namespace Foosball.CSharp.Domain.TeamAggregateModel;
 
-public class TwoPlayersTeam : Team
+public class TwoPlayerTeam : Team
 {
     public PlayerId FirstPlayerId { get; }
     public PlayerId SecondPlayerId { get; }
 
     // Required by EF :-( Private, though :-)
-    private TwoPlayersTeam() : base() { }
+    private TwoPlayerTeam() : base() { }
 
-    public TwoPlayersTeam(NonEmptyString teamName, PlayerId firstPlayerId, PlayerId secondPlayerId) : base(teamName)
+    public TwoPlayerTeam(NonEmptyString teamName, PlayerId firstPlayerId, PlayerId secondPlayerId) : base(teamName)
     {
         if (firstPlayerId is null || secondPlayerId is null)
         {

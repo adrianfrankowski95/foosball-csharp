@@ -30,6 +30,6 @@ public class TeamEntityConfiguration : IEntityTypeConfiguration<Team>
         builder
             .HasDiscriminator<string>("type")
             .HasValue<OnePlayerTeam>("one-player")
-            .HasValue<TwoPlayersTeam>("two-players");
+            .HasValue<TwoPlayerTeam>("two-players");
     }
 }

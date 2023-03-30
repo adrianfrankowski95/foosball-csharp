@@ -209,7 +209,7 @@ namespace Foosball.CSharp.API.Migrations
                     b.HasDiscriminator().HasValue("one-player");
                 });
 
-            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.TwoPlayersTeam", b =>
+            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.TwoPlayerTeam", b =>
                 {
                     b.HasBaseType("Foosball.CSharp.Domain.TeamAggregateModel.Team");
 
@@ -318,7 +318,7 @@ namespace Foosball.CSharp.API.Migrations
                         .HasConstraintName("fk_teams_players_first_player_id");
                 });
 
-            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.TwoPlayersTeam", b =>
+            modelBuilder.Entity("Foosball.CSharp.Domain.TeamAggregateModel.TwoPlayerTeam", b =>
                 {
                     b.HasOne("Foosball.CSharp.Domain.TeamAggregateModel.Player", null)
                         .WithMany()

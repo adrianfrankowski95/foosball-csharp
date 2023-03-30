@@ -37,7 +37,7 @@ public class GameInProgress : Game
     }
 
     // According to the Foosball rules, teams may contain either 1 or 2 players
-    public static GameInProgress Create(TwoPlayersTeam teamA, TwoPlayersTeam teamB, DateTime startedAt)
+    public static GameInProgress Create(TwoPlayerTeam teamA, TwoPlayerTeam teamB, DateTime startedAt)
         => new(teamA.Id, teamB.Id, startedAt);
 
     public static GameInProgress Create(OnePlayerTeam teamA, OnePlayerTeam teamB, DateTime startedAt)

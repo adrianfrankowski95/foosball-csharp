@@ -60,8 +60,8 @@ public class GamesController : ControllerBase
                     game = GameInProgress.Create(onePlayerTeamA, onePlayerTeamB, DateTime.UtcNow);
                     break;
 
-                case TwoPlayersTeam twoPlayersTeamA when teamB is TwoPlayersTeam twoPlayersTeamB:
-                    game = GameInProgress.Create(twoPlayersTeamA, twoPlayersTeamB, DateTime.UtcNow);
+                case TwoPlayerTeam TwoPlayerTeamA when teamB is TwoPlayerTeam TwoPlayerTeamB:
+                    game = GameInProgress.Create(TwoPlayerTeamA, TwoPlayerTeamB, DateTime.UtcNow);
                     break;
 
                 default:
