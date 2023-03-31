@@ -27,13 +27,17 @@ public class SetInProgress : Set
             throw new FoosballDomainException("Scores cannot be null.");
         }
 
+        if (Scores.HaveWinner())
+        {
+            throw new FoosballDomainException("This set is already finished.");
+        }
+
         if (scores.AnyScoreLowerThan(Scores))
         {
             throw new FoosballDomainException("New number of scored goals cannot be lower than the previous one.");
         }
 
         Scores = scores;
-
         return Scores.HaveWinner() ? FinishedSet.Finish(this, now) : this;
     }
 }
