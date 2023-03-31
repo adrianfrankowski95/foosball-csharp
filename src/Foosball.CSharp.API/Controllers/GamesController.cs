@@ -64,6 +64,11 @@ public class GamesController : ControllerBase
         return Ok($"Successfully started game with ID: {newGameId.Value}.");
     }
 
+
+    // Note: in real-life scenario this endpoint should be made idempotent,
+    // meaning that accidentally sending the same result finishing set (eg.: 10:5) multiple times,
+    // wouldn't add multiple sets in finished state or eventually finish the game.
+    // This can be achieved by adding some random request id to the command being generated client-side, stored and rejected if it's duplicated
     [HttpPut]
     public async Task<IActionResult> UpdateGameAsync([FromBody, Required] UpdateGameCommand command)
     {
