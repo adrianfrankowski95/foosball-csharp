@@ -53,9 +53,9 @@ public class DapperGameQueries : IGameQueries
             g.started_at AS {nameof(GameOverview.StartedAt)}
         FROM games AS g
         LEFT JOIN (
-                SELECT game_id, finished_at, team_a_id, team_b_id, team_a_score, team_b_score
+                SELECT DISTINCT ON (game_id) game_id, finished_at, team_a_id, team_b_id, team_a_score, team_b_score
                 FROM sets
-                ORDER BY finished_at DESC NULLS FIRST)
+                ORDER BY game_id, finished_at DESC NULLS FIRST)
             AS sl ON sl.game_id = g.id
         LEFT JOIN (SELECT COUNT(1) AS count, game_id FROM sets GROUP BY sets.game_id) AS s ON s.game_id = g.id
         LEFT JOIN teams AS ta ON ta.id = sl.team_a_id

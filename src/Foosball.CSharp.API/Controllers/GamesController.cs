@@ -6,6 +6,7 @@ using Foosball.CSharp.Domain.Exceptions;
 using Foosball.CSharp.Domain.GameAggregateModel;
 using Foosball.CSharp.Domain.TeamAggregateModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Foosball.CSharp.API.Controllers;
 
@@ -13,15 +14,18 @@ namespace Foosball.CSharp.API.Controllers;
 [Route("[controller]")]
 public class GamesController : ControllerBase
 {
-    private readonly IGameRepository _gameRepository;
-    private readonly ITeamRepository _teamRepository;
     private readonly IGameQueries _gameQueries;
+    private readonly ICreateGameCommandHandler _createGameCommandHandler;
+    private readonly IUpdateGameCommandHandler _updateGameCommandHandler;
 
-    public GamesController(IGameRepository games, ITeamRepository teams, IGameQueries gameQueries)
+    public GamesController(
+        IGameQueries gameQueries,
+        ICreateGameCommandHandler createGameCommandHandler,
+        IUpdateGameCommandHandler updateGameCommandHandler)
     {
-        _gameRepository = games ?? throw new ArgumentNullException(nameof(games));
-        _teamRepository = teams ?? throw new ArgumentNullException(nameof(teams));
         _gameQueries = gameQueries ?? throw new ArgumentNullException(nameof(gameQueries));
+        _createGameCommandHandler = createGameCommandHandler ?? throw new ArgumentNullException(nameof(createGameCommandHandler));
+        _updateGameCommandHandler = updateGameCommandHandler ?? throw new ArgumentNullException(nameof(updateGameCommandHandler));
     }
 
     [HttpGet]
@@ -43,77 +47,42 @@ public class GamesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateGameAsync([FromBody, Required] CreateGameCommand command)
     {
-        var teamA = await _teamRepository.GetTeamAsync(TeamId.FromExisting(command.TeamAId)).ConfigureAwait(false);
-        var teamB = await _teamRepository.GetTeamAsync(TeamId.FromExisting(command.TeamBId)).ConfigureAwait(false);
-
-        if (teamA is null || teamB is null)
-        {
-            return NotFound("Could not find provided teams to start a game.");
-        }
-
-        GameInProgress? game;
+        GameId? newGameId;
         try
         {
-            switch (teamA)
-            {
-                case OnePlayerTeam onePlayerTeamA when teamB is OnePlayerTeam onePlayerTeamB:
-                    game = GameInProgress.Create(onePlayerTeamA, onePlayerTeamB, DateTime.UtcNow);
-                    break;
-
-                case TwoPlayerTeam TwoPlayerTeamA when teamB is TwoPlayerTeam TwoPlayerTeamB:
-                    game = GameInProgress.Create(TwoPlayerTeamA, TwoPlayerTeamB, DateTime.UtcNow);
-                    break;
-
-                default:
-                    return BadRequest("Could not create game with provided teams.");
-            };
+            newGameId = await _createGameCommandHandler.HandleAsync(command).ConfigureAwait(false);
         }
         catch (FoosballDomainException ex)
         {
             return BadRequest(ex.Message);
         }
+        catch (DbUpdateException ex)
+        {
+            return Problem(ex.Message);
+        }
 
-        var success = await _gameRepository.AddGameAsync(game).ConfigureAwait(false);
-
-        return success
-            ? Ok($"Successfully started game with ID: {game.Id.Value}.")
-            : Problem("Error starting a new game.");
+        return Ok($"Successfully started game with ID: {newGameId.Value}.");
     }
 
     [HttpPut]
     public async Task<IActionResult> UpdateGameAsync([FromBody, Required] UpdateGameCommand command)
     {
-        var game = await _gameRepository.GetGameAsync(GameId.FromExisting(command.GameId)).ConfigureAwait(false);
-
-        if (game is null)
-        {
-            return NotFound($"Could not find a game with provided ID: {command.GameId}");
-        }
-
-        if (game is not GameInProgress gameInProgress)
-        {
-            return BadRequest("Could not update a game that is not in progress anymore.");
-        }
-
-        Game? updatedGame;
+        bool success;
         try
         {
-            updatedGame = gameInProgress.UpdateOrBeginSet(
-                Scores.Set(command.TeamAScore.Goals(), command.TeamBScore.Goals()),
-                DateTime.UtcNow);
+            success = await _updateGameCommandHandler.HandleAsync(command).ConfigureAwait(false);
         }
         catch (FoosballDomainException ex)
         {
             return BadRequest(ex.Message);
         }
-
-        var success = await _gameRepository.UpdateGameAsync(updatedGame).ConfigureAwait(false);
+        catch (DbUpdateException ex)
+        {
+            return Problem(ex.Message);
+        }
 
         return success
-            ? Ok(@$"Successfully updated game with ID {game.Id.Value}. {(updatedGame is FinishedGame finished
-                    ? $"Game has finished, winner: {finished.WinnerTeamId.Value}."
-                    : "The game is still in progress.")}")
-
-            : Problem("Error updating a new game.");
+            ? Ok($"Successfully updated game with ID {command.GameId}.")
+            : Problem($"Error updating game with ID {command.GameId}.");
     }
 }
